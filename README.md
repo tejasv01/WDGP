@@ -6,4 +6,6 @@
   Kaushal - IIT2025042
   Kavyansh - IIT2025043
 
-**Project Name:** BookMyShow
+**Project Name:** Spotify
+
+**UX/UI Design** STITCH 
