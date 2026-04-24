@@ -7,3 +7,5 @@
   Kavyansh - IIT2025043
 
 **Project Name:** Spotify
+
+**UX/UI Design** STITCH 
