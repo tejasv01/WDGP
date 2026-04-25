@@ -1,0 +1,20 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "The backend for our webdev group project",
+  "homepage": "https://github.com/tejasv01/WDGP#readme",
+  "bugs": {
+    "url": "https://github.com/tejasv01/WDGP/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tejasv01/WDGP.git"
+  },
+  "license": "ISC",
+  "author": "group26",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
