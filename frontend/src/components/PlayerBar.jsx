@@ -7,7 +7,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 export default function PlayerBar() {
-  const { currentSong, isPlaying, currentTime, togglePlay, formatTime } = usePlayer();
+  const { currentSong, isPlaying, currentTime, togglePlay, formatTime, volume, setVolume } = usePlayer();
   const navigate = useNavigate();
 
   if (!currentSong) return null;
@@ -47,9 +47,15 @@ export default function PlayerBar() {
         <MonitorSpeaker size={18} />
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100px' }}>
           <Volume2 size={18} />
-          <div className="progress-bg">
-            <div className="progress-fill" style={{ width: '80%', backgroundColor: 'white' }}></div>
-          </div>
+          <input 
+            type="range" 
+            min="0" 
+            max="1" 
+            step="0.01" 
+            value={volume}
+            onChange={(e) => setVolume(parseFloat(e.target.value))}
+            style={{ width: '80px', cursor: 'pointer', accentColor: 'var(--spotify-green)' }}
+          />
         </div>
         <Maximize2 size={18} />
       </div>

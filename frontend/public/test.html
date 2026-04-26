@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test Audio</title></head>
+<body>
+  <audio id="player" controls>
+    <source src="https://drive.google.com/uc?export=download&id=18CnPzHhJdInQMt8C0bL2T9DSpNnzBrpD" type="audio/mpeg">
+  </audio>
+  <script>
+    const audio = document.getElementById('player');
+    audio.addEventListener('error', (e) => {
+      console.error('Error playing audio:', e);
+      document.body.innerHTML += '<p>Error playing audio.</p>';
+    });
+  </script>
+</body>
+</html>

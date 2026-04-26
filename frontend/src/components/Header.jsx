@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const navigate = useNavigate();
+  const username = localStorage.getItem('username') || '?';
+  const initial = username.charAt(0).toUpperCase();
 
   return (
     <div className="header">
@@ -24,7 +26,23 @@ export default function Header() {
         <Bell size={20} color="var(--text-secondary)" />
         <Settings size={20} color="var(--text-secondary)" />
         <button className="upgrade-btn">Upgrade</button>
-        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100" style={{ width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' }} alt="user" />
+        <div 
+          style={{ 
+            width: '32px', 
+            height: '32px', 
+            borderRadius: '50%', 
+            backgroundColor: 'pink', 
+            color: 'black', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            fontWeight: 'bold',
+            fontSize: '14px'
+          }}
+          title={username !== '?' ? username : 'User'}
+        >
+          {initial}
+        </div>
       </div>
     </div>
   );
