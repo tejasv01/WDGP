@@ -35,7 +35,7 @@ export const PlayerProvider = ({ children }) => {
     return () => clearInterval(interval);
   }, [isPlaying, currentSong.duration]);
 
-  const togglePlay = () => setIsPlaying(!isPlaying);
+  const togglePlay = () => setIsPlaying((prev) => !prev);
 
   const playSong = (song) => {
     setCurrentSong(song);
