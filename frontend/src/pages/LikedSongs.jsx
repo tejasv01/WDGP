@@ -1,6 +1,6 @@
 import React from 'react';
 import { usePlayer } from '../context/PlayerContext';
-import { Play, Heart, Clock, MoreHorizontal } from 'lucide-react';
+import { Play, Heart, Clock } from 'lucide-react';
 
 export default function LikedSongs() {
   const { songs, playSong } = usePlayer();
