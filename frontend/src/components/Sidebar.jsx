@@ -14,23 +14,23 @@ export default function Sidebar() {
       </div>
 
       <div className="nav-menu">
-        <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} end>
+        <NavLink to="/" style={{ textDecoration: "none" }} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`} end>
           <Home size={20} /> <span>Home</span>
         </NavLink>
-        <NavLink to="/search" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+        <NavLink to="/search" style={{ textDecoration: "none" }} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
           <Search size={20} /> <span>Search</span>
         </NavLink>
-        <NavLink to="/library" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+        <NavLink to="/library" style={{ textDecoration: "none" }} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
           <Library size={20} /> <span>Library</span>
         </NavLink>
       </div>
 
       <div className="sidebar-section-title">YOUR COLLECTION</div>
       <div className="nav-menu">
-        <NavLink to="/liked-songs" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
+        <NavLink to="/liked-songs" style={{ textDecoration: "none" }} className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>
           <Heart size={20} /> <span>Liked Songs</span>
         </NavLink>
-        <div className="nav-link" style={{cursor: 'pointer'}}>
+        <div className="nav-link" style={{ cursor: 'pointer' }}>
           <PlusSquare size={20} /> <span>Create Playlist</span>
         </div>
       </div>
