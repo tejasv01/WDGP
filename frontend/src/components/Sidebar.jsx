@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Search, Library, PlusSquare, Heart, ListMusic } from 'lucide-react';
+import { Home, Search, Library, PlusSquare, Heart } from 'lucide-react';
 
 export default function Sidebar() {
   return (
