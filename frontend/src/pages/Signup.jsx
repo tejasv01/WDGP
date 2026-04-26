@@ -1,24 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Smartphone, ArrowLeft } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [authMode, setAuthMode] = useState('email'); // 'email', 'phone', 'otp'
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [otpCode, setOtpCode] = useState('');
 
   const handleSocialLogin = () => {
-    navigate('/dashboard');
-  };
-
-  const handleSendOtp = () => {
-    if (!phoneNumber) return alert('Please enter a phone number');
-    setAuthMode('otp');
-  };
-
-  const handleVerifyOtp = () => {
-    if (!otpCode) return;
     navigate('/dashboard');
   };
 
@@ -30,59 +17,13 @@ export default function Signup() {
       </div>
       
       <div className="login-form">
-        {authMode === 'email' && (
-          <>
-            <div className="input-group">
-              <label className="input-label">Email address</label>
-              <input type="email" placeholder="name@domain.com" className="login-input" />
-            </div>
-            <button onClick={() => navigate('/dashboard')} className="btn-primary">
-              Next
-            </button>
-          </>
-        )}
-
-        {authMode === 'phone' && (
-          <>
-            <div className="input-group">
-              <label className="input-label">Phone Number</label>
-              <input 
-                type="tel" 
-                placeholder="+1 123 456 7890" 
-                className="login-input" 
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-            </div>
-            <button onClick={handleSendOtp} className="btn-primary">
-              Send Code
-            </button>
-            <button onClick={() => setAuthMode('email')} className="btn-social" style={{ marginTop: '0.5rem', border: 'none', color: 'var(--text-secondary)' }}>
-              <ArrowLeft size={16} style={{marginRight: '8px'}} /> Back to Email
-            </button>
-          </>
-        )}
-
-        {authMode === 'otp' && (
-          <>
-            <div className="input-group">
-              <label className="input-label">Enter 6-digit Code</label>
-              <input 
-                type="text" 
-                placeholder="123456" 
-                className="login-input" 
-                value={otpCode}
-                onChange={(e) => setOtpCode(e.target.value)}
-              />
-            </div>
-            <button onClick={handleVerifyOtp} className="btn-primary">
-              Verify & Sign Up
-            </button>
-            <button onClick={() => setAuthMode('phone')} className="btn-social" style={{ marginTop: '0.5rem', border: 'none', color: 'var(--text-secondary)' }}>
-              <ArrowLeft size={16} style={{marginRight: '8px'}} /> Back to Phone
-            </button>
-          </>
-        )}
+        <div className="input-group">
+          <label className="input-label">Email address</label>
+          <input type="email" placeholder="name@domain.com" className="login-input" />
+        </div>
+        <button onClick={() => navigate('/dashboard')} className="btn-primary">
+          Next
+        </button>
       </div>
 
       <div className="divider-container">
@@ -92,12 +33,10 @@ export default function Signup() {
       </div>
 
       <div className="social-btns">
-        {authMode !== 'phone' && authMode !== 'otp' && (
-          <button className="btn-social" onClick={() => setAuthMode('phone')}>
-            <Smartphone size={20} className="icon-left" />
-            Sign up with phone number
-          </button>
-        )}
+        <button className="btn-social">
+          <Smartphone size={20} className="icon-left" />
+          Sign up with phone number
+        </button>
         <button className="btn-social" onClick={handleSocialLogin}>
           <svg viewBox="0 0 24 24" width="20" height="20" className="icon-left" style={{fill: 'currentColor'}}>
             <path d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/>
