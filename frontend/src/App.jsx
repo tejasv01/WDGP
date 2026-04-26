@@ -2,8 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { PlayerProvider } from './context/PlayerContext';
 import Layout from './components/Layout';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
+
 import Dashboard from './pages/Dashboard';
 import Search from './pages/Search';
 import Library from './pages/Library';
@@ -15,8 +14,7 @@ export default function App() {
     <PlayerProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+
           <Route element={<Layout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
