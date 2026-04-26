@@ -8,10 +8,6 @@ const userSchema = new mongoose.Schema({
         trim: true,
         minlength: 3
     },
-    profileImage: {
-        type: String,
-        default: "https://default-avatar-url.com/avatar.png"
-    },
     email: {
         type: String,
         required: true,
