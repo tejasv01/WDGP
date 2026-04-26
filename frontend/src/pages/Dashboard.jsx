@@ -5,6 +5,10 @@ import { Play, PlusSquare, Star, Heart, MoreVertical } from 'lucide-react';
 export default function Dashboard() {
   const { songs, playSong } = usePlayer();
 
+  if (!songs || songs.length === 0) {
+    return <div style={{ padding: '2rem', color: 'white', textAlign: 'center' }}>Loading songs...</div>;
+  }
+
   return (
     <>
       {/* Hero Banner */}

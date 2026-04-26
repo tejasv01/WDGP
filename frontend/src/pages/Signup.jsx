@@ -1,12 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Smartphone, ArrowLeft } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSocialLogin = () => {
     navigate('/dashboard');
+  };
+
+  const handleSignup = async () => {
+    setError('');
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password })
+      });
+      const data = await response.json();
+      
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('username', data.user.username);
+        navigate('/dashboard');
+      } else {
+        setError(data.message || 'Signup failed');
+      }
+    } catch (err) {
+      setError('Network error. Please try again later.');
+    }
   };
 
   return (
@@ -17,12 +43,39 @@ export default function Signup() {
       </div>
       
       <div className="login-form">
+        {error && <div style={{ color: '#f15e6c', marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
+        <div className="input-group">
+          <label className="input-label">Username</label>
+          <input 
+            type="text" 
+            placeholder="Choose a username" 
+            className="login-input" 
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
         <div className="input-group">
           <label className="input-label">Email address</label>
-          <input type="email" placeholder="name@domain.com" className="login-input" />
+          <input 
+            type="email" 
+            placeholder="name@domain.com" 
+            className="login-input" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
-        <button onClick={() => navigate('/dashboard')} className="btn-primary">
-          Next
+        <div className="input-group">
+          <label className="input-label">Password</label>
+          <input 
+            type="password" 
+            placeholder="Create a password" 
+            className="login-input" 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <button onClick={handleSignup} className="btn-primary">
+          Sign up
         </button>
       </div>
 
