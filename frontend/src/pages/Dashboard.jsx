@@ -35,11 +35,17 @@ export default function Dashboard() {
 
       <div className="recently-played-grid no-scrollbar">
         {songs.slice(0, 5).map(song => (
-          <div key={song.id} className="song-card" onClick={() => playSong(song)}>
+          <button
+            key={song.id}
+            type="button"
+            className="song-card"
+            onClick={() => playSong(song)}
+            style={{ background: 'none', border: 'none', padding: 0, textAlign: 'inherit', color: 'inherit', cursor: 'pointer' }}
+          >
             <img src={song.cover} alt={song.title} />
             <h3>{song.title}</h3>
             <p>{song.artist}</p>
-          </div>
+          </button>
         ))}
       </div>
 
