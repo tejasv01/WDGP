@@ -33,7 +33,7 @@ export const PlayerProvider = ({ children }) => {
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, currentSong.duration]);
+  }, [isPlaying, currentSong.id, currentSong.duration]);
 
   const togglePlay = () => setIsPlaying((prev) => !prev);
 
