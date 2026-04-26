@@ -7,4 +7,5 @@ try {
   console.log('RENDER SUCCESS');
 } catch (e) {
   console.error('RENDER ERROR', e);
+  process.exitCode = 1;
 }
