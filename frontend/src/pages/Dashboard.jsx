@@ -10,6 +10,29 @@ export default function Dashboard() {
   const [activeMenu, setActiveMenu] = React.useState(null);
   const [recommendations, setRecommendations] = React.useState([]);
   const [loadingRecs, setLoadingRecs] = React.useState(false);
+  const [history, setHistory] = React.useState([]);
+  const [loadingHistory, setLoadingHistory] = React.useState(false);
+
+  const fetchHistory = async () => {
+    setLoadingHistory(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/history`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      setHistory(data);
+    } catch (e) {
+      console.error('Failed to fetch history:', e);
+    } finally {
+      setLoadingHistory(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchHistory();
+  }, []);
+
 
   React.useEffect(() => {
     const fetchRecommendations = async () => {
@@ -82,19 +105,19 @@ export default function Dashboard() {
       </div>
 
       <div className="recently-played-grid no-scrollbar">
-        {songs.slice(0, 5).map(song => (
-          <button
-            key={song.id}
-            type="button"
-            className="song-card"
-            onClick={() => playSong(song)}
-            style={{ background: 'none', border: 'none', padding: 0, textAlign: 'inherit', color: 'inherit', cursor: 'pointer' }}
-          >
-            <img src={song.cover} alt={song.title} />
-            <h3>{song.title}</h3>
-            <p>{song.artist}</p>
-          </button>
-        ))}
+        {loadingHistory && <p style={{ color: 'var(--text-secondary)' }}>Loading your history...</p>}
+        {!loadingHistory && history.length === 0 && <p style={{ color: 'var(--text-secondary)' }}>No songs played recently</p>}
+        {!loadingHistory && history.map(item => {
+          const song = item.songId;
+          if (!song) return null;
+          return (
+            <div key={item._id} className="song-card" onClick={() => playSong(song)}>
+              <img src={song.cover} alt={song.title} />
+              <h3>{song.title}</h3>
+              <p>{song.artist}</p>
+            </div>
+          );
+        })}
       </div>
 
       <div className="dashboard-lower">
