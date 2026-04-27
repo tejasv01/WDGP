@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Search as SearchIcon, Play } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { Search as SearchIcon, Play, Plus } from 'lucide-react';
 import { usePlayer } from '../context/PlayerContext';
 
 const CATEGORIES = [
@@ -22,11 +23,24 @@ const LANGUAGES = [
 
 export default function Search() {
   const { songs: allSongs, playSong } = usePlayer();
-  const [query, setQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get('q') || '');
   const [activeGenre, setActiveGenre] = useState(null);
   const [activeLanguage, setActiveLanguage] = useState(null);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(null); // Track which song's playlist menu is open
+  const { playlists, addSongToPlaylist } = usePlayer();
+
+  // Sync with URL params
+  useEffect(() => {
+    const q = searchParams.get('q') || '';
+    if (q !== query) {
+      setQuery(q);
+      setActiveGenre(null);
+      setActiveLanguage(null);
+    }
+  }, [searchParams]);
 
   // Debounce search
   useEffect(() => {
@@ -51,7 +65,7 @@ export default function Search() {
       }
     }, 300);
     return () => clearTimeout(timer);
-  }, [query, activeGenre]);
+  }, [query, activeGenre, activeLanguage]);
 
   const handleCategoryClick = (genre) => {
     setActiveGenre(prev => prev === genre ? null : genre);
@@ -128,12 +142,64 @@ export default function Search() {
                     <div style={{ fontWeight: 'bold', fontSize: '0.95rem' }}>{song.title}</div>
                     <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>{song.artist} · {song.album}</div>
                   </div>
-                  <button
-                    style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '0.5rem' }}
-                    onClick={(e) => { e.stopPropagation(); playSong(song); }}
-                  >
-                    <Play size={20} fill="currentColor" />
-                  </button>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <button
+                      style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '0.5rem' }}
+                      onClick={(e) => { e.stopPropagation(); playSong(song); }}
+                    >
+                      <Play size={20} fill="currentColor" />
+                    </button>
+                    
+                    <div style={{ position: 'relative' }}>
+                      <button
+                        style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '0.5rem' }}
+                        onClick={(e) => { 
+                          e.stopPropagation(); 
+                          setActiveMenu(activeMenu === song._id ? null : song._id);
+                        }}
+                      >
+                        <Plus size={20} />
+                      </button>
+                      
+                      {activeMenu === song._id && (
+                        <div style={{
+                          position: 'absolute',
+                          bottom: '100%',
+                          right: '0',
+                          backgroundColor: '#282828',
+                          borderRadius: '4px',
+                          padding: '8px 0',
+                          width: '160px',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                          zIndex: 1000,
+                          marginBottom: '8px'
+                        }}>
+                          <div style={{ padding: '4px 12px', fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>ADD TO PLAYLIST</div>
+                          {playlists.length === 0 && <div style={{ padding: '8px 12px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>No playlists found</div>}
+                          {playlists.map(p => (
+                            <div
+                              key={p._id}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                const success = await addSongToPlaylist(p._id, song._id);
+                                if (success) setActiveMenu(null);
+                              }}
+                              style={{
+                                padding: '8px 12px',
+                                fontSize: '0.85rem',
+                                cursor: 'pointer',
+                                color: 'white'
+                              }}
+                              onMouseOver={(e) => e.target.style.backgroundColor = '#3e3e3e'}
+                              onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+                            >
+                              {p.name}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

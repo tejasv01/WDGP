@@ -12,6 +12,7 @@ export const PlayerProvider = ({ children }) => {
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8);
   const [likedSongIds, setLikedSongIds] = useState(new Set());
+  const [playlists, setPlaylists] = useState([]);
   
   const [audio] = useState(() => new Audio());
 
@@ -40,6 +41,13 @@ export const PlayerProvider = ({ children }) => {
           });
           const likesData = await likesRes.json();
           setLikedSongIds(new Set(likesData.map(s => s._id)));
+
+          // Fetch user playlists
+          const playlistsRes = await fetch('http://localhost:8080/api/playlists', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const playlistsData = await playlistsRes.json();
+          setPlaylists(Array.isArray(playlistsData) ? playlistsData : []);
         }
       } catch (error) {
         console.error('Error fetching songs:', error);
@@ -162,6 +170,77 @@ export const PlayerProvider = ({ children }) => {
     }
   };
 
+  const addSongToPlaylist = async (playlistId, songId) => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    try {
+      const res = await fetch(`http://localhost:8080/api/playlists/${playlistId}/songs/${songId}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        // Refresh playlists
+        const playlistsRes = await fetch('http://localhost:8080/api/playlists', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const playlistsData = await playlistsRes.json();
+        setPlaylists(Array.isArray(playlistsData) ? playlistsData : []);
+        return true;
+      }
+    } catch (e) {
+      console.error('Failed to add song to playlist:', e);
+    }
+    return false;
+  };
+
+  const createPlaylist = async (name) => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    try {
+      const res = await fetch('http://localhost:8080/api/playlists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ name })
+      });
+      if (res.ok) {
+        const playlistsRes = await fetch('http://localhost:8080/api/playlists', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const playlistsData = await playlistsRes.json();
+        setPlaylists(Array.isArray(playlistsData) ? playlistsData : []);
+      }
+    } catch (e) {
+      console.error('Failed to create playlist:', e);
+    }
+  };
+
+  const deletePlaylist = async (id) => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    try {
+      const res = await fetch(`http://localhost:8080/api/playlists/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const playlistsRes = await fetch('http://localhost:8080/api/playlists', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const playlistsData = await playlistsRes.json();
+        setPlaylists(Array.isArray(playlistsData) ? playlistsData : []);
+        return true;
+      }
+    } catch (e) {
+      console.error('Failed to delete playlist:', e);
+    }
+    return false;
+  };
+
+
+
   return (
     <PlayerContext.Provider value={{
       songs,
@@ -177,6 +256,10 @@ export const PlayerProvider = ({ children }) => {
       setVolume,
       likedSongIds,
       toggleLike,
+      playlists,
+      addSongToPlaylist,
+      createPlaylist,
+      deletePlaylist
     }}>
       {children}
     </PlayerContext.Provider>

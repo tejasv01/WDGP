@@ -14,6 +14,16 @@ export default function PlayerBar() {
 
   const isLiked = likedSongIds.has(currentSong._id);
 
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
   return (
     <div className="player-bar">
       <div className="player-left" onClick={() => navigate('/now-playing')} style={{ cursor: 'pointer' }}>
@@ -83,7 +93,11 @@ export default function PlayerBar() {
             }}
           />
         </div>
-        <Maximize2 size={18} />
+        <Maximize2 
+          size={18} 
+          style={{ cursor: 'pointer' }} 
+          onClick={toggleFullscreen} 
+        />
       </div>
     </div>
   );

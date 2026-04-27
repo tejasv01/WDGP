@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { usePlayer } from '../context/PlayerContext';
 import { Play, Clock } from 'lucide-react';
 
@@ -12,9 +13,38 @@ const timeAgo = (dateStr) => {
 
 export default function Library() {
   const { songs, playSong } = usePlayer();
-  const [activeTab, setActiveTab] = useState('playlists');
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'playlists');
+  
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab) setActiveTab(tab);
+  }, [searchParams]);
+
   const [history, setHistory] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
+  const [loadingPlaylists, setLoadingPlaylists] = useState(false);
+
+  useEffect(() => {
+    const fetchPlaylists = async () => {
+      setLoadingPlaylists(true);
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch('http://localhost:8080/api/playlists', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        setPlaylists(Array.isArray(data) ? data : []);
+      } catch (e) {
+        console.error('Failed to fetch playlists:', e);
+      } finally {
+        setLoadingPlaylists(false);
+      }
+    };
+    fetchPlaylists();
+  }, []);
 
   useEffect(() => {
     if (activeTab !== 'recently-played') return;
@@ -62,23 +92,34 @@ export default function Library() {
 
       {activeTab === 'playlists' && (
         <div className="recently-played-grid no-scrollbar">
-          <div className="song-card" style={{ background: 'linear-gradient(135deg, #450af5, #c4efd9)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div 
+            className="song-card" 
+            onClick={() => navigate('/liked-songs')}
+            style={{ 
+              background: 'linear-gradient(135deg, #450af5, #c4efd9)', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+          >
             <h3 style={{ fontSize: '1.5rem', color: 'white' }}>Liked Songs</h3>
           </div>
-          {songs[1] && (
-            <div className="song-card">
-              <img src={songs[1].cover} alt="Playlist" />
-              <h3>Chill Vibes</h3>
-              <p>By Spotify</p>
-            </div>
-          )}
-          {songs[3] && (
-            <div className="song-card">
-              <img src={songs[3].cover} alt="Playlist" />
-              <h3>Late Night Drive</h3>
+          
+          {loadingPlaylists && <p style={{ color: 'var(--text-secondary)' }}>Loading playlists...</p>}
+          
+          {!loadingPlaylists && playlists.map(p => (
+            <div 
+              key={p._id} 
+              className="song-card" 
+              onClick={() => navigate(`/playlist/${p._id}`)}
+              style={{ cursor: 'pointer' }}
+            >
+              <img src={p.cover} alt={p.name} />
+              <h3>{p.name}</h3>
               <p>By You</p>
             </div>
-          )}
+          ))}
         </div>
       )}
 
