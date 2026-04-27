@@ -807,3 +807,39 @@ button {
   gap: 1rem;
   color: var(--text-secondary);
 }
+
+/* Volume Slider */
+input[type="range"].volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  background: #555;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"].volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.volume-wrapper:hover input[type="range"].volume-slider::-webkit-slider-thumb {
+  opacity: 1;
+}
+
+input[type="range"].volume-slider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  border: none;
+  cursor: pointer;
+}
