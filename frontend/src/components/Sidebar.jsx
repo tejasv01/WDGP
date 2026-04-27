@@ -4,46 +4,12 @@ import { NavLink } from 'react-router-dom';
 import { Home, Search, Library, PlusSquare, Heart } from 'lucide-react';
 
 export default function Sidebar() {
-  const [playlists, setPlaylists] = useState([]);
-
-  const fetchPlaylists = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-      const res = await fetch(`${API_URL}/api/playlists`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setPlaylists(Array.isArray(data) ? data : []);
-    } catch (e) {
-      console.error('Failed to fetch playlists:', e);
-    }
-  };
-
-  useEffect(() => {
-    fetchPlaylists();
-  }, []);
+  const { playlists, createPlaylist } = usePlayer();
 
   const handleCreatePlaylist = async () => {
     const name = prompt('Enter playlist name:', 'My Playlist');
     if (!name) return;
-
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/playlists`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ name })
-      });
-      if (res.ok) {
-        fetchPlaylists();
-      }
-    } catch (e) {
-      console.error('Failed to create playlist:', e);
-    }
+    await createPlaylist(name);
   };
 
   return (
