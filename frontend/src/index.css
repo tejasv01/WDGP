@@ -474,7 +474,9 @@ button {
 }
 
 .song-card {
-  min-width: 180px;
+  width: 160px;
+  min-width: 160px;
+  flex-shrink: 0;
   cursor: pointer;
   transition: transform 0.2s;
 }
@@ -484,8 +486,8 @@ button {
 }
 
 .song-card img {
-  width: 100%;
-  aspect-ratio: 1/1;
+  width: 160px;
+  height: 160px;
   border-radius: 0.5rem;
   object-fit: cover;
   margin-bottom: 0.75rem;
