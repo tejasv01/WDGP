@@ -39,16 +39,23 @@ export default function Dashboard() {
     <>
       {/* Hero Banner */}
       <div className="featured-banner">
-        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=1200" alt="Solstice Echo" className="banner-img" />
+        <img src="https://wallpapers.com/images/hd/the-weeknd-after-hours-3000-x-3000-wallpaper-yocnnl0wdmg9ewo8.jpg" alt="The Weeknd" className="banner-img" />
         <div className="banner-overlay"></div>
         <div className="banner-content">
           <span style={{ backgroundColor: 'rgba(29, 185, 84, 0.2)', color: 'var(--spotify-green)', padding: '4px 12px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '1rem', display: 'inline-block' }}>ARTIST OF THE MONTH</span>
-          <h1>Solstice Echo</h1>
+          <h1>The Weeknd</h1>
           <p style={{ fontSize: '1.1rem', color: '#ccc', maxWidth: '500px', marginBottom: '2rem' }}>
-            Experience the boundary-pushing audio journey of 'Neon Horizons' in Dolby Atmos immersive spatial audio.
+            Experience the cinematic and haunting soundscape of 'After Hours', a masterpiece of modern pop and R&B.
           </p>
           <div style={{ display: 'flex', gap: '1rem' }}>
-            <button onClick={() => playSong(songs[4])} style={{ backgroundColor: 'var(--spotify-green)', color: '#000', padding: '12px 32px', borderRadius: '30px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button 
+              onClick={() => {
+                const blindingLights = songs.find(s => s.title.toLowerCase().includes('blinding lights'));
+                if (blindingLights) playSong(blindingLights);
+                else playSong(songs[0]);
+              }} 
+              style={{ backgroundColor: 'var(--spotify-green)', color: '#000', padding: '12px 32px', borderRadius: '30px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}
+            >
               <Play size={20} fill="currentColor" /> Play Now
             </button>
             <button style={{ backgroundColor: 'transparent', border: '1px solid #555', color: '#fff', padding: '12px 32px', borderRadius: '30px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
