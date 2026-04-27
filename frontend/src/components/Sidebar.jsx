@@ -52,7 +52,6 @@ export default function Sidebar() {
         <img src="/logo.svg" alt="Spotify Logo" width="32" height="32" />
         <div>
           <h2 style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Spotify</h2>
-          <div style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', letterSpacing: '1px' }}>PREMIUM AUDIO</div>
         </div>
       </div>
 
