@@ -5,7 +5,7 @@ import { Play, PlusSquare, Star, Heart, Plus } from 'lucide-react';
 import API_URL from '../config';
 
 export default function Dashboard() {
-  const { songs, playSong, playlists, addSongToPlaylist } = usePlayer();
+  const { songs, playSong, playlists, addSongToPlaylist, toggleLike } = usePlayer();
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = React.useState(null);
   const [recommendations, setRecommendations] = React.useState([]);
@@ -58,7 +58,13 @@ export default function Dashboard() {
             >
               <Play size={20} fill="currentColor" /> Play Now
             </button>
-            <button style={{ backgroundColor: 'transparent', border: '1px solid #555', color: '#fff', padding: '12px 32px', borderRadius: '30px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button 
+              onClick={() => {
+                const target = songs.find(s => s.title.toLowerCase().includes('blinding lights')) || songs[0];
+                if (target) toggleLike(target);
+              }}
+              style={{ backgroundColor: 'transparent', border: '1px solid #555', color: '#fff', padding: '12px 32px', borderRadius: '30px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+            >
               <PlusSquare size={20} /> Save to Library
             </button>
           </div>
