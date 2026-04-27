@@ -2,6 +2,7 @@ import API_URL from "../config";
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Search, Library, PlusSquare, Heart } from 'lucide-react';
+import { usePlayer } from '../context/PlayerContext';
 
 export default function Sidebar() {
   const { playlists, createPlaylist } = usePlayer();
