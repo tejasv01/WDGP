@@ -110,7 +110,15 @@ export default function Dashboard() {
         </div>
 
         <div>
-          <h2 className="section-title">Recommendations</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1rem' }}>
+            <h2 className="section-title" style={{ margin: 0 }}>Recommendations</h2>
+            <span 
+              onClick={() => navigate('/recommendations')}
+              style={{ color: 'var(--spotify-green)', fontSize: '0.875rem', fontWeight: 'bold', cursor: 'pointer' }}
+            >
+              View All
+            </span>
+          </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {loadingRecs && <p style={{ color: 'var(--text-secondary)' }}>Finding songs you'll love...</p>}
             {!loadingRecs && recommendations.map((song) => (

@@ -11,6 +11,7 @@ import Library from './pages/Library';
 import LikedSongs from './pages/LikedSongs';
 import NowPlaying from './pages/NowPlaying';
 import PlaylistDetail from './pages/PlaylistDetail';
+import Recommendations from './pages/Recommendations';
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
             <Route path="/library" element={<Library />} />
             <Route path="/liked-songs" element={<LikedSongs />} />
             <Route path="/playlist/:id" element={<PlaylistDetail />} />
+            <Route path="/recommendations" element={<Recommendations />} />
             <Route path="/now-playing" element={<NowPlaying />} />
           </Route>
         </Routes>
