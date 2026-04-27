@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import API_URL from '../config';
 
 const PlayerContext = createContext();
 
@@ -24,7 +25,7 @@ export const PlayerProvider = ({ children }) => {
   useEffect(() => {
     const fetchSongs = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/songs');
+        const response = await fetch(`${API_URL}/api/songs`);
         const data = await response.json();
         setSongs(data);
         if (data.length > 0) {
@@ -36,7 +37,7 @@ export const PlayerProvider = ({ children }) => {
         // Fetch liked songs
         const token = localStorage.getItem('token');
         if (token) {
-          const likesRes = await fetch('http://localhost:8080/api/likes', {
+          const likesRes = await fetch(`${API_URL}/api/likes`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           const likesData = await likesRes.json();
@@ -106,7 +107,7 @@ export const PlayerProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (!token) return;
     try {
-      await fetch('http://localhost:8080/api/history', {
+      await fetch(`${API_URL}/api/history`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -154,7 +155,7 @@ export const PlayerProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (!token) return;
     try {
-      await fetch(`http://localhost:8080/api/likes/${id}`, {
+      const res = await fetch(`${API_URL}/api/likes/${id}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -174,13 +175,13 @@ export const PlayerProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (!token) return;
     try {
-      const res = await fetch(`http://localhost:8080/api/playlists/${playlistId}/songs/${songId}`, {
+      const res = await fetch(`${API_URL}/api/playlists/${playlistId}/songs/${songId}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
         // Refresh playlists
-        const playlistsRes = await fetch('http://localhost:8080/api/playlists', {
+        const playlistsRes = await fetch(`${API_URL}/api/playlists`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const playlistsData = await playlistsRes.json();
@@ -197,7 +198,7 @@ export const PlayerProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (!token) return;
     try {
-      const res = await fetch('http://localhost:8080/api/playlists', {
+      const res = await fetch(`${API_URL}/api/playlists`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -206,7 +207,7 @@ export const PlayerProvider = ({ children }) => {
         body: JSON.stringify({ name })
       });
       if (res.ok) {
-        const playlistsRes = await fetch('http://localhost:8080/api/playlists', {
+        const playlistsRes = await fetch(`${API_URL}/api/playlists`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const playlistsData = await playlistsRes.json();
@@ -221,7 +222,7 @@ export const PlayerProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (!token) return;
     try {
-      const res = await fetch(`http://localhost:8080/api/playlists/${id}`, {
+      const res = await fetch(`${API_URL}/api/playlists/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

@@ -1,3 +1,4 @@
+import API_URL from "../config";
 import React, { useState } from 'react';
 import { Smartphone, ArrowLeft } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -16,7 +17,7 @@ export default function Signup() {
   const handleSignup = async () => {
     setError('');
     try {
-      const response = await fetch('http://localhost:8080/api/auth/register', {
+      const response = await fetch('${API_URL}/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password })
