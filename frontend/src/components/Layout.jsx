@@ -14,7 +14,10 @@ export default function Layout() {
         {!isNowPlaying && <Sidebar />}
         <div className={`main-content no-scrollbar ${isNowPlaying ? 'w-full' : ''}`}>
           {!isNowPlaying && <Header />}
-          <div className="content-container" style={{ padding: isNowPlaying ? '0' : '2rem' }}>
+          <div className="content-container" style={{ 
+            padding: isNowPlaying ? '0' : '2rem',
+            paddingBottom: isNowPlaying ? '0' : '110px'
+          }}>
             <Outlet />
           </div>
         </div>
