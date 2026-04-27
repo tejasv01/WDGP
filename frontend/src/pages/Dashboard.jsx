@@ -165,7 +165,6 @@ export default function Dashboard() {
                   <h4 style={{ fontSize: '0.9rem', margin: 0 }}>{song.title}</h4>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{song.artist}</span>
                 </div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginRight: '1rem' }}>Based on your listening</span>
                 <Heart size={16} color="var(--text-secondary)" style={{ marginRight: '1rem' }} />
                 
                 <div style={{ position: 'relative' }}>
