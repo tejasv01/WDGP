@@ -7,7 +7,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 export default function PlayerBar() {
-  const { currentSong, isPlaying, currentTime, duration, seek, togglePlay, formatTime, volume, setVolume, likedSongIds, toggleLike } = usePlayer();
+  const { currentSong, isPlaying, currentTime, duration, seek, togglePlay, formatTime, volume, setVolume, likedSongIds, toggleLike, playNext, playPrevious } = usePlayer();
   const navigate = useNavigate();
 
   if (!currentSong) return null;
@@ -44,11 +44,23 @@ export default function PlayerBar() {
       <div className="player-center">
         <div className="player-controls">
           <Shuffle size={18} color="var(--text-secondary)" />
-          <SkipBack size={20} fill="currentColor" color="var(--text-secondary)" />
+          <SkipBack 
+            size={20} 
+            fill="currentColor" 
+            color="var(--text-secondary)" 
+            onClick={playPrevious}
+            style={{ cursor: 'pointer' }}
+          />
           <button className="play-pause-btn" onClick={togglePlay}>
             {isPlaying ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" style={{ marginLeft: '2px' }} />}
           </button>
-          <SkipForward size={20} fill="currentColor" color="var(--text-secondary)" />
+          <SkipForward 
+            size={20} 
+            fill="currentColor" 
+            color="var(--text-secondary)" 
+            onClick={playNext}
+            style={{ cursor: 'pointer' }}
+          />
           <Repeat size={18} color="var(--text-secondary)" />
         </div>
         <div className="progress-bar-container">

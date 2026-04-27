@@ -44,7 +44,7 @@ export const PlayerProvider = ({ children }) => {
           setLikedSongIds(new Set(likesData.map(s => s._id)));
 
           // Fetch user playlists
-          const playlistsRes = await fetch('http://localhost:8080/api/playlists', {
+          const playlistsRes = await fetch(`${API_URL}/api/playlists`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           const playlistsData = await playlistsRes.json();
@@ -227,7 +227,7 @@ export const PlayerProvider = ({ children }) => {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
-        const playlistsRes = await fetch('http://localhost:8080/api/playlists', {
+        const playlistsRes = await fetch(`${API_URL}/api/playlists`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const playlistsData = await playlistsRes.json();
@@ -238,6 +238,20 @@ export const PlayerProvider = ({ children }) => {
       console.error('Failed to delete playlist:', e);
     }
     return false;
+  };
+
+  const playNext = () => {
+    if (!currentSong || songs.length === 0) return;
+    const currentIndex = songs.findIndex(s => s._id === currentSong._id);
+    const nextIndex = (currentIndex + 1) % songs.length;
+    playSong(songs[nextIndex]);
+  };
+
+  const playPrevious = () => {
+    if (!currentSong || songs.length === 0) return;
+    const currentIndex = songs.findIndex(s => s._id === currentSong._id);
+    const prevIndex = (currentIndex - 1 + songs.length) % songs.length;
+    playSong(songs[prevIndex]);
   };
 
 
@@ -260,7 +274,9 @@ export const PlayerProvider = ({ children }) => {
       playlists,
       addSongToPlaylist,
       createPlaylist,
-      deletePlaylist
+      deletePlaylist,
+      playNext,
+      playPrevious
     }}>
       {children}
     </PlayerContext.Provider>
