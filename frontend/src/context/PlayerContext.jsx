@@ -41,7 +41,11 @@ export const PlayerProvider = ({ children }) => {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           const likesData = await likesRes.json();
-          setLikedSongIds(new Set(likesData.map(s => s._id)));
+          if (Array.isArray(likesData)) {
+            setLikedSongIds(new Set(likesData.map(s => s._id)));
+          } else {
+            console.error('Liked songs data is not an array:', likesData);
+          }
 
           // Fetch user playlists
           const playlistsRes = await fetch(`${API_URL}/api/playlists`, {

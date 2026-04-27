@@ -12,13 +12,21 @@ export default function LikedSongs() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
+      if (!token) return;
+      
       const res = await fetch(`${API_URL}/api/likes`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
-      setLikedSongs(data);
+      if (Array.isArray(data)) {
+        setLikedSongs(data);
+      } else {
+        console.error('Liked songs data is not an array:', data);
+        setLikedSongs([]);
+      }
     } catch (e) {
       console.error('Failed to fetch liked songs:', e);
+      setLikedSongs([]);
     } finally {
       setLoading(false);
     }
