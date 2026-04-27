@@ -1,3 +1,4 @@
+import API_URL from "../config";
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { usePlayer } from '../context/PlayerContext';
@@ -32,7 +33,7 @@ export default function Library() {
       setLoadingPlaylists(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:8080/api/playlists', {
+        const res = await fetch('${API_URL}/api/playlists', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -52,7 +53,7 @@ export default function Library() {
       setLoadingHistory(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:8080/api/history', {
+        const res = await fetch('${API_URL}/api/history', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();

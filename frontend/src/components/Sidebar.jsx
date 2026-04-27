@@ -1,3 +1,4 @@
+import API_URL from "../config";
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Search, Library, PlusSquare, Heart } from 'lucide-react';
@@ -9,7 +10,7 @@ export default function Sidebar() {
     try {
       const token = localStorage.getItem('token');
       if (!token) return;
-      const res = await fetch('http://localhost:8080/api/playlists', {
+      const res = await fetch('${API_URL}/api/playlists', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -29,7 +30,7 @@ export default function Sidebar() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:8080/api/playlists', {
+      const res = await fetch('${API_URL}/api/playlists', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

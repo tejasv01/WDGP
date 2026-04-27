@@ -1,3 +1,4 @@
+import API_URL from "../config";
 import React, { useState, useEffect } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { Play, Pause, Heart, Sparkles, Plus } from 'lucide-react';
@@ -12,7 +13,7 @@ export default function Recommendations() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:8080/api/songs/recommendations', {
+      const res = await fetch('${API_URL}/api/songs/recommendations', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();

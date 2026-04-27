@@ -2,6 +2,7 @@ import React from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { useNavigate } from 'react-router-dom';
 import { Play, PlusSquare, Star, Heart, Plus } from 'lucide-react';
+import API_URL from '../config';
 
 export default function Dashboard() {
   const { songs, playSong, playlists, addSongToPlaylist } = usePlayer();
@@ -15,7 +16,7 @@ export default function Dashboard() {
       setLoadingRecs(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:8080/api/songs/recommendations', {
+        const res = await fetch('${API_URL}/api/songs/recommendations', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();

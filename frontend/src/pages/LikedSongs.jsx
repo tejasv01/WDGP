@@ -1,3 +1,4 @@
+import API_URL from "../config";
 import React, { useState, useEffect } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { Play, Pause, Heart, Clock } from 'lucide-react';
@@ -11,7 +12,7 @@ export default function LikedSongs() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:8080/api/likes', {
+      const res = await fetch('${API_URL}/api/likes', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();

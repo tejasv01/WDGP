@@ -1,3 +1,4 @@
+import API_URL from "../config";
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePlayer } from '../context/PlayerContext';
@@ -15,7 +16,7 @@ export default function PlaylistDetail() {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`http://localhost:8080/api/playlists/${id}`, {
+        const res = await fetch(`${API_URL}/api/playlists/${id}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();

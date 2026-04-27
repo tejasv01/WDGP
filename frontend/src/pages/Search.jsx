@@ -1,3 +1,4 @@
+import API_URL from "../config";
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search as SearchIcon, Play, Plus } from 'lucide-react';
@@ -55,7 +56,7 @@ export default function Search() {
         if (query.trim()) params.set('q', query.trim());
         if (activeGenre) params.set('genre', activeGenre);
         if (activeLanguage) params.set('language', activeLanguage);
-        const res = await fetch(`http://localhost:8080/api/songs/search?${params}`);
+        const res = await fetch(`${API_URL}/api/songs/search?${params}`);
         const data = await res.json();
         setResults(data);
       } catch (e) {
