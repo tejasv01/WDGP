@@ -7,10 +7,22 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 export default function PlayerBar() {
-  const { currentSong, isPlaying, currentTime, togglePlay, formatTime, volume, setVolume } = usePlayer();
+  const { currentSong, isPlaying, currentTime, duration, seek, togglePlay, formatTime, volume, setVolume, likedSongIds, toggleLike } = usePlayer();
   const navigate = useNavigate();
 
   if (!currentSong) return null;
+
+  const isLiked = likedSongIds.has(currentSong._id);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
 
   return (
     <div className="player-bar">
@@ -20,7 +32,13 @@ export default function PlayerBar() {
           <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{currentSong.title}</span>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{currentSong.artist}</span>
         </div>
-        <Heart size={20} color="var(--text-secondary)" style={{ marginLeft: '1rem', cursor: 'pointer' }} onClick={(e) => { e.stopPropagation(); }} />
+        <Heart 
+          size={20} 
+          color={isLiked ? 'var(--spotify-green)' : 'var(--text-secondary)'}
+          fill={isLiked ? 'var(--spotify-green)' : 'none'}
+          style={{ marginLeft: '1rem', cursor: 'pointer' }} 
+          onClick={(e) => { e.stopPropagation(); toggleLike(currentSong); }} 
+        />
       </div>
 
       <div className="player-center">
@@ -35,17 +53,30 @@ export default function PlayerBar() {
         </div>
         <div className="progress-bar-container">
           <span>{formatTime(currentTime)}</span>
-          <div className="progress-bg">
-            <div className="progress-fill" style={{ width: `${(currentTime / currentSong.duration) * 100}%` }}></div>
-          </div>
-          <span>{formatTime(currentSong.duration)}</span>
+          <input
+            type="range"
+            min="0"
+            max={duration || 0}
+            step="0.5"
+            value={currentTime}
+            onChange={(e) => seek(parseFloat(e.target.value))}
+            className="volume-slider"
+            style={{
+              flex: 1,
+              cursor: 'pointer',
+              background: duration
+                ? `linear-gradient(to right, white ${(currentTime / duration) * 100}%, #555 ${(currentTime / duration) * 100}%)`
+                : '#555'
+            }}
+          />
+          <span>{formatTime(duration || 0)}</span>
         </div>
       </div>
 
       <div className="player-right">
         <ListMusic size={18} />
         <MonitorSpeaker size={18} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100px' }}>
+        <div className="volume-wrapper" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '120px' }}>
           <Volume2 size={18} />
           <input 
             type="range" 
@@ -54,10 +85,19 @@ export default function PlayerBar() {
             step="0.01" 
             value={volume}
             onChange={(e) => setVolume(parseFloat(e.target.value))}
-            style={{ width: '80px', cursor: 'pointer', accentColor: 'var(--spotify-green)' }}
+            className="volume-slider"
+            style={{ 
+              width: '80px', 
+              cursor: 'pointer',
+              background: `linear-gradient(to right, white ${volume * 100}%, #555 ${volume * 100}%)`
+            }}
           />
         </div>
-        <Maximize2 size={18} />
+        <Maximize2 
+          size={18} 
+          style={{ cursor: 'pointer' }} 
+          onClick={toggleFullscreen} 
+        />
       </div>
     </div>
   );
