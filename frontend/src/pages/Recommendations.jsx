@@ -13,7 +13,7 @@ export default function Recommendations() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('${API_URL}/api/songs/recommendations', {
+      const res = await fetch(`${API_URL}/api/songs/recommendations`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
