@@ -8,12 +8,6 @@ dotenv.config({
 });
 
 // For Vercel, we need to export the app and handle DB connection
-const connectAndRun = async () => {
-    if (mongoose.connection.readyState === 0) {
-        await connectDB();
-    }
-};
-
 if (process.env.NODE_ENV !== 'production') {
     const startServer = async () => {
         try {
@@ -27,11 +21,5 @@ if (process.env.NODE_ENV !== 'production') {
     };
     startServer();
 }
-
-// Ensure DB is connected for every request in serverless
-app.use(async (req, res, next) => {
-    await connectAndRun();
-    next();
-});
 
 export default app;
