@@ -10,7 +10,7 @@ export default function Sidebar() {
     try {
       const token = localStorage.getItem('token');
       if (!token) return;
-      const res = await fetch('${API_URL}/api/playlists', {
+      const res = await fetch(`${API_URL}/api/playlists`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -30,7 +30,7 @@ export default function Sidebar() {
 
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('${API_URL}/api/playlists', {
+      const res = await fetch(`${API_URL}/api/playlists`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

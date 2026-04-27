@@ -33,7 +33,7 @@ export default function Library() {
       setLoadingPlaylists(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('${API_URL}/api/playlists', {
+        const res = await fetch(`${API_URL}/api/playlists`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -53,7 +53,7 @@ export default function Library() {
       setLoadingHistory(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('${API_URL}/api/history', {
+        const res = await fetch(`${API_URL}/api/history`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
